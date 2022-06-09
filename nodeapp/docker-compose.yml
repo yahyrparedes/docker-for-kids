@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        ms_port: 3000
+    restart: always
+    expose:
+      - 3010
+    ports:
+      - 3010:3000
+    networks:
+      - node-app
+    volumes:
+      - ./:/usr/src/app
+
+
+networks:
+  node-app:
+    driver: bridge

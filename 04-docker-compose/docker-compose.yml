@@ -1,0 +1,15 @@
+version: "3.0"
+
+services:
+  web:
+    container_name: "nginx_compose"
+    image: nginx
+    volumes:
+      - ./templates:/etc/nginx/templates
+      - ./:/usr/share/nginx/html
+    ports:
+      - "8080:80"
+
+volumes:
+  templates:
+    driver: local

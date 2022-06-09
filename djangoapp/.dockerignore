@@ -1,0 +1,13 @@
+__pycache__
+*.pyc
+*.ipynb
+*.sqlite3
+Dockerfile
+docker-compose.yml
+
+
+
+mysql_data
+venv
+tenant_logos
+booking_attachments

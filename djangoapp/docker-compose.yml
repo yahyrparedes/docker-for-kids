@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+
+  nginx:  
+    restart: always
+    image: "nginx:latest"
+    ports:
+      - "9090:85"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    networks:
+      - django
+    depends_on: 
+      - web
+
+  web:
+    container_name: appseed_app
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        STATIC_URL: "/static/"
+    restart: unless-stopped
+    networks:
+      - django
+    env_file: .env
+    links:
+      - "db"
+    volumes:
+      - ./:/app 
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+
+
+  db:
+    platform: linux/x86_64
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: on-failure
+    environment:
+      MYSQL_DATABASE: 'djangodemo'
+      MYSQL_USER: 'djangodemo'
+      MYSQL_PASSWORD: 'djangodemo'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - '3306:3306'
+    networks:
+      - django
+    volumes:
+#      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+      - ./mysql_data:/var/lib/mysql
+
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  django:
+    driver: bridge
+
+
+
