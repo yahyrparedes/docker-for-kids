@@ -141,3 +141,5 @@ GitHub.sublime-settings
 .idea/
 
 venv/
+
+mysql_data/
